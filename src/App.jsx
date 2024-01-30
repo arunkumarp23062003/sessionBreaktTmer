@@ -41,17 +41,18 @@ const App = () => {
   const cheveronButtonStyle = `btn btn-outline-secondary`
 
   const handleDecrementAndIncrement = ({ object, value }) => {
-    if (timerActive && object === 'sessionTimer') {
-      if (value > 0 && value <= 60) {
+    if ((object === 'sessionTimer' && timerActive && timerDisplay === 'Session') || (object === 'breakTimer' && timerActive && timerDisplay === 'Break')) {
+      return;
+    }
+    if (value > 0 && value <= 60) {
+      setTimer((prevValue) => ({
+        ...prevValue,
+        [object]: value
+      }))
+      if (object === "sessionTimer" && timerDisplay !== "Break") {
         setTimerActive(false);
-        setTimer((prevValue) => ({
-          ...prevValue,
-          [object]: value
-        }))
-        if (object === "sessionTimer") {
-          setDisplayCount(value * 60);
-          clearTimeout(round.current);
-        }
+        setDisplayCount(value * 60);
+        clearTimeout(round.current);
       }
     }
   }
